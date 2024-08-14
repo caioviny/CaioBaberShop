@@ -1,5 +1,5 @@
 import { SearchIcon } from 'lucide-react';
-import Header from './_components/header'; // Certifique-se de ajustar o caminho conforme necessário
+import Header from './_components/header';
 import { Input } from './_components/ui/input';
 import { Button } from './_components/ui/button';
 import Image from 'next/image';
@@ -7,8 +7,13 @@ import { Card, CardContent } from './_components/ui/card';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { Avatar } from './_components/ui/avatar';
 import { Badge } from './_components/ui/badge';
+import BarbershopItem from './_components/ui/barbershop-item'; // ajuste o caminho conforme necessário
+import db from './db'; // Certifique-se de importar seu banco de dados
 
-const Home = () => {
+const Home = async () => {
+  //Chamando o Banco de Dados
+  const barbershops = await db.barbershop.findMany({});
+  
   return (
     <div>
       {/* header */}
@@ -19,10 +24,10 @@ const Home = () => {
         {/* Renderizando o Texto com o nome do user e a data do dia */}
         <h2 className="text-xl font-bold">Olá, Caio TAVARES!</h2>
         <p>Segunda-Feira, 12 de Agosto</p>
-        {/* Input com a  barra de pesquisa */}
+        {/* Input com a barra de pesquisa */}
 
         {/*BUSCA*/}
-        <div className="mt-6 flex itemns-center gap-2">
+        <div className="mt-6 flex items-center gap-2">
           <Input placeholder="Faça sua busca..." />
           {/*Adding um btn com um icon de barra de pesquisa*/}
           <Button>
@@ -40,13 +45,15 @@ const Home = () => {
         </div>
 
         {/*AGENDAMENTO*/}
-        <Card className="mt-6">
+        <h2 className="mt-6 mb-3 text-xs font-bold uppercase text-gray-400">Agendamentos</h2>
+
+        <Card>
           <CardContent className="flex justify-between p-0">
             {/*ESQUERDA*/}
             <div className="flex flex-col gap-2 py-5 pl-5">
               <Badge className="w-fit">Confirmado</Badge>
               <h3 className="font-semibold">Corte de Cabelo</h3>
-              <div className="flex itemns-center gap-2">
+              <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
                   <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"/>
                 </Avatar>
@@ -54,13 +61,23 @@ const Home = () => {
               </div>
             </div>
             {/*DIREITA*/}
-            <div className="flex flex-col items-center justify-cent border-l-2 border-solid px-5">
+            <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
               <p className="text-sm mt-6">Agosto</p>
               <p className="text-2xl">15</p>
               <p className="text-sm">08:35</p>
             </div>
           </CardContent>
         </Card>
+
+        {/*Recomendados*/}
+        <h2 className="mt-6 mb-3 text-xs font-bold uppercase text-gray-400">Recomendados</h2>
+        {barbershops && barbershops.length > 0 ? (
+          barbershops.map(barbershop => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))
+        ) : (
+          <p>No barbershops available.</p>
+        )}
       </div>
     </div>
   )
