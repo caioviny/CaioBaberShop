@@ -7,8 +7,9 @@ import { Card, CardContent } from './_components/ui/card';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { Avatar } from './_components/ui/avatar';
 import { Badge } from './_components/ui/badge';
-import BarbershopItem from './_components/ui/barbershop-item'; // ajuste o caminho conforme necessário
-import db from './db'; // Certifique-se de importar seu banco de dados
+
+import { db } from "./_lib/prisma"
+import BarbershopItem from "./_components/barbershop-item"
 
 const Home = async () => {
   //Chamando o Banco de Dados
